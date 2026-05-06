@@ -482,8 +482,93 @@ footer{
 .rv-r{opacity:0;transform:translateX(30px);}
 
 /* ═══ RESPONSIVE ═══ */
+/* ─── HAMBURGER & MOBILE MENU ─── */
+.hamburger{
+  display:none;
+  flex-direction:column;justify-content:center;align-items:center;
+  width:40px;height:40px;cursor:pointer;
+  background:none;border:none;gap:5px;padding:4px;
+  border-radius:8px;transition:background var(--trans);
+}
+.hamburger:hover{background:rgba(255,255,255,0.08);}
+.hamburger span{
+  display:block;width:22px;height:2px;
+  background:rgba(255,255,255,0.85);
+  border-radius:2px;
+  transition:all 0.3s ease;
+  transform-origin:center;
+}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* Mobile overlay menu */
+.mobile-menu{
+  display:none;
+  position:fixed;top:72px;left:0;right:0;bottom:0;
+  background:rgba(12,27,51,0.98);
+  backdrop-filter:blur(20px);
+  z-index:8000;
+  flex-direction:column;
+  padding:2rem 1.5rem;
+  overflow-y:auto;
+  opacity:0;
+  transform:translateY(-8px);
+  transition:opacity 0.3s ease, transform 0.3s ease;
+  pointer-events:none;
+}
+.mobile-menu.open{
+  display:flex;
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:all;
+}
+.mobile-nav-link{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 0;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  color:rgba(255,255,255,0.85);
+  font-size:1.1rem;font-weight:400;
+  cursor:pointer;
+  transition:color var(--trans);
+}
+.mobile-nav-link:hover{color:var(--white);}
+.mobile-nav-link:last-child{border-bottom:none;}
+.mobile-submenu{
+  display:none;
+  flex-direction:column;
+  gap:0;
+  padding-left:1rem;
+  margin-top:0.25rem;
+}
+.mobile-submenu.open{display:flex;}
+.mobile-submenu a{
+  padding:0.7rem 0;
+  color:rgba(255,255,255,0.6);
+  font-size:0.95rem;
+  cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  transition:color var(--trans);
+  display:flex;align-items:center;gap:0.5rem;
+}
+.mobile-submenu a:hover{color:var(--sky);}
+.mobile-submenu a::before{content:'└';color:rgba(255,255,255,0.2);font-size:0.8rem;}
+.mobile-cta{
+  margin-top:1.5rem;
+  padding:0.9rem 1.5rem;
+  background:var(--blue);
+  color:var(--white)!important;
+  border-radius:40px;
+  text-align:center;
+  font-size:1rem;font-weight:500;
+  cursor:pointer;
+  transition:background var(--trans);
+}
+.mobile-cta:hover{background:var(--blue2);}
+
 @media(max-width:900px){
   .nav-menu,.nav-cta{display:none;}
+  .hamburger{display:flex;}
   .funnel-grid,.grid-3,.grid-4,.method-steps,.team-grid,.values-grid,.projects-full-grid,.join-grid,.contact-wrap,.footer-grid{grid-template-columns:1fr;}
   .grid-2{grid-template-columns:1fr;}
   .projects-grid{grid-template-columns:1fr;}
@@ -526,8 +611,30 @@ footer{
       <li><a onclick="navigate('join')">加入我們</a></li>
     </ul>
     <a class="nav-cta btn" onclick="navigate('contact')">聯絡我們</a>
+    <!-- Hamburger button (mobile only) -->
+    <button class="hamburger" id="hamburger" aria-label="選單" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-nav-link" onclick="mobileNavigate('home')">首頁</div>
+  <div class="mobile-nav-link" onclick="mobileNavigate('about')">關於</div>
+  <div class="mobile-nav-link" onclick="toggleMobileSubmenu(this)">
+    服務
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transition:transform 0.3s;"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="mobile-submenu" id="mobileServicesMenu">
+    <a onclick="mobileNavigate('business')">企業客戶 <span style="font-size:0.78rem;color:rgba(255,255,255,0.35);">For Enterprises</span></a>
+    <a onclick="mobileNavigate('artists')">藝術家 <span style="font-size:0.78rem;color:rgba(255,255,255,0.35);">For Artists</span></a>
+    <a onclick="mobileNavigate('institutions')">院校合作 <span style="font-size:0.78rem;color:rgba(255,255,255,0.35);">For Academic Institutions</span></a>
+  </div>
+  <div class="mobile-nav-link" onclick="mobileNavigate('projects')">案例</div>
+  <div class="mobile-nav-link" onclick="mobileNavigate('join')">加入我們</div>
+  <div class="mobile-cta" onclick="mobileNavigate('contact')">聯絡我們</div>
+</div>
 
 <!-- ═══════════════════════════════════════ -->
 <!-- PAGE: HOME                             -->
@@ -1936,6 +2043,43 @@ window.addEventListener('scroll', function() {
   var nav = document.getElementById('nav');
   if (nav) nav.style.boxShadow = window.scrollY > 40 ? '0 4px 24px rgba(0,0,0,0.2)' : 'none';
 });
+
+// ─── MOBILE MENU ──────────────────────
+function toggleMobileMenu() {
+  var menu = document.getElementById('mobileMenu');
+  var btn  = document.getElementById('hamburger');
+  if (!menu || !btn) return;
+  var isOpen = menu.classList.contains('open');
+  if (isOpen) {
+    menu.classList.remove('open');
+    btn.classList.remove('open');
+    document.body.style.overflow = '';
+  } else {
+    menu.classList.add('open');
+    btn.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function toggleMobileSubmenu(el) {
+  var submenu = document.getElementById('mobileServicesMenu');
+  var arrow   = el.querySelector('svg');
+  if (!submenu) return;
+  var isOpen  = submenu.classList.contains('open');
+  submenu.classList.toggle('open', !isOpen);
+  if (arrow) arrow.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+function mobileNavigate(page) {
+  // Close menu first
+  var menu = document.getElementById('mobileMenu');
+  var btn  = document.getElementById('hamburger');
+  if (menu) menu.classList.remove('open');
+  if (btn)  btn.classList.remove('open');
+  document.body.style.overflow = '';
+  // Navigate
+  navigate(page);
+}
 
 // ─── INIT ─────────────────────────────
 init();
