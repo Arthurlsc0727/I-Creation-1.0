@@ -584,7 +584,11 @@ footer{
   section{padding:4rem 0;}
 }
 
-/* ═══ PROJECT MODAL ═══ */
+.team-card-click:hover{transform:translateY(-6px)!important;box-shadow:0 16px 40px rgba(27,79,138,0.15)!important;}
+
+/* ═══ TEAM MODAL ═══ */
+#teamModalOverlay{display:flex;}
+#teamModalOverlay:not(.open){display:flex;}
 .modal-overlay{
   position:fixed;inset:0;z-index:99999;
   background:rgba(12,27,51,0.75);
@@ -992,19 +996,7 @@ footer{
       </div></div>
   </section>
 
-  <!-- Stats -->
-  <section class="section-sm" style="background:var(--white);">
-    <div class="container">
-      <div class="grid-4" style="text-align:center;">
-        <div class="rv"><div class="stat-num">150+</div><div class="stat-label">成功執行專案</div></div>
-        <div class="rv"><div class="stat-num">80+</div><div class="stat-label">合作品牌企業</div></div>
-        <div class="rv"><div class="stat-num">500+</div><div class="stat-label">服務藝術家</div></div>
-        <div class="rv"><div class="stat-num">30+</div><div class="stat-label">合作院校機構</div></div>
-      </div>
-    </div>
-  </section>
 
-  <div class="divider"></div>
 
   <!-- Global CTA -->
   <section class="section" style="background:var(--ivory);">
@@ -1052,11 +1044,11 @@ footer{
         </div>
         <div class="rv-r" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
           <div class="card" style="background:var(--navy);color:var(--white);text-align:center;padding:2rem 1.5rem;">
-            <div class="stat-num" style="color:var(--sky);">2010</div>
-            <div class="stat-label" style="color:rgba(255,255,255,0.5);">創立於台灣</div>
+            <div class="stat-num" style="color:var(--sky);">1999</div>
+            <div class="stat-label" style="color:rgba(255,255,255,0.5);">創立於香港</div>
           </div>
           <div class="card" style="text-align:center;padding:2rem 1.5rem;">
-            <div class="stat-num">15+</div>
+            <div class="stat-num">26+</div>
             <div class="stat-label">年產業經驗</div>
           </div>
           <div class="card" style="text-align:center;padding:2rem 1.5rem;">
@@ -1079,28 +1071,51 @@ footer{
     <div class="container">
       <p class="label rv">Our Team</p>
       <h2 class="sec-title rv">核心團隊與背景</h2>
-      <div class="team-grid">
-        <div class="card team-card rv">
-          <div class="team-avatar">K</div>
-          <h4 class="team-name">核心創辦人</h4>
-          <p class="team-role">創意總監 / 藝術策劃</p>
-          <p class="team-bio">具備多年國際演出策劃與品牌合作經驗，曾主導多項大型藝術節與企業文化活動</p>
+      <p class="sec-sub rv" style="margin-bottom:0;">點擊成員卡片，深入了解每位核心成員的背景與專業</p>
+      <div class="team-grid" style="grid-template-columns:repeat(2,1fr);max-width:760px;margin-left:auto;margin-right:auto;">
+        <div class="card team-card rv team-card-click" onclick="openTeamModal('k')" style="cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;">
+          <div class="team-avatar" style="background:none;overflow:hidden;"><img src="images/Irene Au.jpg" alt="Irene Au" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+          <h4 class="team-name">Irene Au</h4>
+          <p class="team-role">創辦人</p>
+          <p class="team-bio">於藝術、教育、傳播與創業交會的領域深耕逾 30 年，致力於建立機構、製作活動、培訓人才</p>
+          <p style="font-size:0.75rem;color:var(--blue);margin-top:1rem;letter-spacing:0.05em;">點擊查看詳情 →</p>
         </div>
-        <div class="card team-card rv">
-          <div class="team-avatar" style="background:linear-gradient(135deg,#C8A96E,#e8c980);">M</div>
-          <h4 class="team-name">業務發展總監</h4>
-          <p class="team-role">企業合作 / 品牌策略</p>
-          <p class="team-bio">深耕品牌行銷領域，擅長整合藝術元素打造差異化的企業文化體驗與公關策略</p>
-        </div>
-        <div class="card team-card rv">
-          <div class="team-avatar" style="background:linear-gradient(135deg,#4A90D9,#7ab8f5);">L</div>
-          <h4 class="team-name">教育計畫總監</h4>
-          <p class="team-role">院校合作 / 人才培育</p>
-          <p class="team-bio">致力於連結學術教育與產業實務，協助藝術系學生建立完整的職涯發展路徑</p>
+        <div class="card team-card rv team-card-click" onclick="openTeamModal('m')" style="cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;">
+          <div class="team-avatar" style="background:none;overflow:hidden;"><img src="images/Edmond Wong.jpg" alt="Edmond Wong" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+          <h4 class="team-name">Edmond Wong</h4>
+          <p class="team-role">董事</p>
+          <p class="team-bio">曾任職香港及新加坡多家國際銀行與金融機構，擁有逾 30 年豐富的金融業資歷</p>
+          <p style="font-size:0.75rem;color:var(--blue);margin-top:1rem;letter-spacing:0.05em;">點擊查看詳情 →</p>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Team Modal Overlay -->
+  <div id="teamModalOverlay" class="modal-overlay" onclick="closeTeamModal(event)">
+    <div class="modal-box" style="max-width:640px;" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeTeamModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="modal-body" style="padding:2.5rem 2.5rem 2rem;">
+        <!-- Avatar -->
+        <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem;">
+          <div id="tmAvatar" style="width:90px;height:90px;border-radius:50%;overflow:hidden;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,0.15);"></div>
+          <div>
+            <p id="tmRole" style="font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--blue);margin-bottom:0.4rem;display:flex;align-items:center;gap:0.5rem;"><span style="display:inline-block;width:18px;height:1px;background:var(--blue);"></span><span id="tmRoleText"></span></p>
+            <h3 id="tmName" style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:600;color:var(--dark);margin-bottom:0.2rem;"></h3>
+            <p id="tmTitle" style="font-size:0.85rem;color:var(--gray4);"></p>
+          </div>
+        </div>
+        <!-- Divider -->
+        <div style="height:1px;background:linear-gradient(90deg,var(--gray2),transparent);margin-bottom:1.8rem;"></div>
+        <!-- Bio -->
+        <div id="tmBio" style="font-size:0.92rem;line-height:1.9;color:var(--gray4);"></div>
+        <!-- Tags -->
+        <div id="tmTags" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.5rem;"></div>
+      </div>
+    </div>
+  </div>
 
   <div class="divider"></div>
 
@@ -1146,7 +1161,7 @@ footer{
         <p>歡迎與我們聯繫，深入了解 I Creation 策藝如何為您創造價值</p>
         <div class="cta-buttons">
           <button class="btn btn-primary" onclick="navigate('contact')">立即聯絡</button>
-          <button class="btn btn-outline" onclick="navigate('projects')">查看作品集</button>
+          <button class="btn btn-outline" onclick="navigate('projects')">了解更多案例與計劃</button>
         </div>
       </div>
     </div>
@@ -2758,6 +2773,57 @@ function mobileNavigate(page) {
   // Navigate
   navigate(page);
 }
+
+// ─── TEAM MODAL ───────────────────────
+var teamData = {
+  k: {
+    photo: 'images/Irene Au.jpg',
+    initial: 'I',
+    gradient: 'linear-gradient(135deg,var(--blue),var(--sky))',
+    roleLabel: 'Founder',
+    name: 'Irene Au',
+    title: '創辦人',
+    bio: '<p>Irene Au 於藝術、教育、傳播與創業交會的領域深耕逾 30 年，致力於建立機構、製作活動、培訓人才，並協助創意專業人士在這個鮮少有人提供明確指引的產業中站穩腳步。</p><p style="margin-top:1rem;">她於 1999 年創立 I Creation 策藝，作為專注於藝術領域的公共關係及活動顧問公司。自此以來，她製作並管理涵蓋音樂、劇場、舞蹈、視覺藝術、文學、電影、粵劇及武術等領域的活動，形式從小型獨奏會到大型國際製作，從校園工作坊到企業及政府活動皆有涉獵。</p><p style="margin-top:1rem;">她亦是維也納少年合唱團音樂學院基金會的創辦董事。該基金會是維也納少年合唱團 500 年歷史中首個海外機構。她同時為香港—維也納音樂節的共同創辦人兼執行董事。為表揚她對奧地利與香港文化交流的貢獻，奧地利聯邦政府於 2017 年授予她騎士十字勳章（金質榮譽勳章）。</p><p style="margin-top:1rem;">2021 年，Irene 創立 KALOS，這是一個創意創業平台，旨在支持新生代音樂家與創意專業人士建立可持續且具意義的職涯。透過 KALOS，她以線上課程、實體工作坊及密集訓練營的形式，提供完整的創意創業課程。</p><p style="margin-top:1rem;">Irene 亦曾擔任節目主持人及溝通教練，服務對象包括專業人士、教育工作者、學生，甚至家長。她曾為學校、大學及企業設計培訓課程，並於香港及海外進行客座講座與演說。</p><p style="margin-top:1rem;">她目前擔任香港中文大學逸夫書院校董會成員，以及國際崇她社九龍分社董事兼公共關係及傳訊委員會聯席主席。她亦為逸夫書院校友會榮譽主席、香港中文大學校友會聯會教育基金董事，並曾獲頒「逸夫之星」獎項（2017）。</p><p style="margin-top:1rem;">對 Irene 而言，最深層的成就感來自連結人、理念與不同領域。</p>',
+    tags: ['藝術活動製作', '創意創業', '文化交流', 'KALOS 創辦人', '奧地利榮譽勳章 2017']
+  },
+  m: {
+    photo: 'images/Edmond Wong.jpg',
+    initial: 'E',
+    gradient: 'linear-gradient(135deg,#C8A96E,#e8c980)',
+    roleLabel: 'Director',
+    name: 'Edmond Wong',
+    title: '董事',
+    bio: '<p>過去 30 年來，Edmond 曾任職於香港及新加坡多家國際銀行與金融機構。他在 Raiffeisen Bank International AG（奧合國際銀行）香港分行的成立過程中扮演關鍵角色，並曾擔任該分行行政總裁，負責監督銀行分行所有職能部門。</p><p style="margin-top:1rem;">他曾擔任香港奧地利商會董事逾 10 年，目前為中大可持續發展基金（CUSE Fund）導師，並擔任香港中文大學校友慈善基金顧問。</p>',
+    tags: ['國際金融', '銀行管理', '奧地利商會', '中大顧問', '可持續發展']
+  }
+};
+
+function openTeamModal(id) {
+  var d = teamData[id];
+  if (!d) return;
+  var avatarEl = document.getElementById('tmAvatar');
+  avatarEl.innerHTML = '<img src="' + d.photo + '" alt="' + d.name + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentNode.innerHTML=\'<div style=&quot;width:100%;height:100%;background:' + d.gradient.replace(/"/g,"'") + ';display:flex;align-items:center;justify-content:center;font-family:Playfair Display,serif;font-size:2.2rem;color:#fff;&quot;>' + d.initial + '</div>\'">';
+  document.getElementById('tmRoleText').textContent = d.roleLabel;
+  document.getElementById('tmName').textContent = d.name;
+  document.getElementById('tmTitle').textContent = d.title;
+  document.getElementById('tmBio').innerHTML = d.bio;
+  var tagsEl = document.getElementById('tmTags');
+  tagsEl.innerHTML = d.tags.map(function(t){ return '<span class="pill">'+t+'</span>'; }).join('');
+  var overlay = document.getElementById('teamModalOverlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTeamModal(e) {
+  if (e && e.target !== document.getElementById('teamModalOverlay')) return;
+  document.getElementById('teamModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeTeamModal();
+});
 
 // ─── INIT ─────────────────────────────
 init();
