@@ -2566,15 +2566,15 @@ window.addEventListener('popstate', function(e) {
 
 // Init
 function init() {
-  var hash = window.location.hash.replace('#', '');
-  var pg = pages.includes(hash) ? hash : 'home';
-  var el = document.getElementById('page-' + pg);
+  // Always start on home — ignore any URL hash on first load
+  var el = document.getElementById('page-home');
   if (el) el.classList.add('active');
-  currentPage = pg;
+  currentPage = 'home';
   try {
-    history.replaceState({ page: pg }, '', pg === 'home' ? window.location.pathname : '#' + pg);
+    history.replaceState({ page: 'home' }, '', window.location.pathname);
   } catch(e) {}
-  setTimeout(function() { animatePage(pg); }, 100);
+  window.scrollTo(0, 0);
+  setTimeout(function() { animatePage('home'); }, 100);
 }
 
 // ─── ANIMATIONS ───────────────────────
