@@ -1959,12 +1959,12 @@ footer{
             <div class="dynamic-fields" id="fields-business">
               <div class="form-group">
                 <label>公司名稱 Company Name *</label>
-                <input type="text" placeholder="請輸入貴公司名稱"/>
+                <input type="text" id="fcompany" placeholder="請輸入貴公司名稱"/>
               </div>
               <div class="form-row">
                 <div class="form-group">
                   <label>產業別 Industry</label>
-                  <select>
+                  <select id="findustry">
                     <option value="">請選擇...</option>
                     <option>金融 / 保險</option>
                     <option>奢侈品 / 精品</option>
@@ -1977,7 +1977,7 @@ footer{
                 </div>
                 <div class="form-group">
                   <label>預算範圍 Budget Range</label>
-                  <select>
+                  <select id="fbudget">
                     <option value="">請選擇...</option>
                     <option>NT$ 50 萬以下</option>
                     <option>NT$ 50-100 萬</option>
@@ -1988,7 +1988,7 @@ footer{
               </div>
               <div class="form-group">
                 <label>服務需求 Service Needs</label>
-                <select>
+                <select id="fservice">
                   <option value="">請選擇主要需求...</option>
                   <option>藝術活動策劃</option>
                   <option>品牌出版企劃</option>
@@ -2002,7 +2002,7 @@ footer{
             <div class="dynamic-fields" id="fields-artist">
               <div class="form-group">
                 <label>藝術專業 Artistic Discipline *</label>
-                <select>
+                <select id="fdiscipline">
                   <option value="">請選擇...</option>
                   <option>古典音樂</option>
                   <option>爵士 / 流行音樂</option>
@@ -2015,11 +2015,11 @@ footer{
               </div>
               <div class="form-group">
                 <label>作品集連結 Portfolio URL</label>
-                <input type="url" placeholder="https://yourportfolio.com"/>
+                <input type="url" id="fportfolio" placeholder="https://yourportfolio.com"/>
               </div>
               <div class="form-group">
                 <label>感興趣的計畫 Programs of Interest</label>
-                <select>
+                <select id="fprograms">
                   <option value="">請選擇...</option>
                   <option>創意企業家課程</option>
                   <option>國際音樂遊學計畫</option>
@@ -2034,12 +2034,12 @@ footer{
             <div class="dynamic-fields" id="fields-institution">
               <div class="form-group">
                 <label>院校 / 機構名稱 Institution Name *</label>
-                <input type="text" placeholder="請輸入院校或機構名稱"/>
+                <input type="text" id="finstitution" placeholder="請輸入院校或機構名稱"/>
               </div>
               <div class="form-row">
                 <div class="form-group">
                   <label>機構類型 Type</label>
-                  <select>
+                  <select id="finstitution_type">
                     <option value="">請選擇...</option>
                     <option>大學院校</option>
                     <option>高中職學校</option>
@@ -2050,7 +2050,7 @@ footer{
                 </div>
                 <div class="form-group">
                   <label>學生人數 Student Count</label>
-                  <select>
+                  <select id="fstudents">
                     <option value="">請選擇...</option>
                     <option>100 人以下</option>
                     <option>100-500 人</option>
@@ -2061,7 +2061,7 @@ footer{
               </div>
               <div class="form-group">
                 <label>合作方向 Collaboration Interest</label>
-                <select>
+                <select id="fcollaboration">
                   <option value="">請選擇...</option>
                   <option>課程與講座媒合</option>
                   <option>國內外音樂計畫</option>
@@ -2093,11 +2093,11 @@ footer{
             <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:1.2rem;">最後，告訴我們您的需求</h3>
             <div class="form-group">
               <label>主旨 Subject</label>
-              <input type="text" placeholder="您想討論的主題或計畫名稱"/>
+              <input type="text" id="fsubject" placeholder="您想討論的主題或計畫名稱"/>
             </div>
             <div class="form-group">
               <label>詳細需求 Message *</label>
-              <textarea style="height:130px;" placeholder="請詳述您的需求、目標或任何您想讓我們了解的資訊..."></textarea>
+              <textarea id="fmessage" style="height:130px;" placeholder="請詳述您的需求、目標或任何您想讓我們了解的資訊..."></textarea>
             </div>
             <div class="form-nav">
               <button class="form-back" onclick="prevStep()">
@@ -2723,6 +2723,41 @@ function submitForm() {
   var cur = document.getElementById('step' + formStep);
   var success = document.getElementById('stepSuccess');
   if (!cur || !success || typeof gsap === 'undefined') return;
+
+  // 收集基本欄位
+  var payload = {
+    提交時間: new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }),
+    身份: selectedIdentity === 'business' ? '企業/品牌' : selectedIdentity === 'artist' ? '藝術家' : '院校/機構',
+    姓名: (document.getElementById('fname') || {}).value || '',
+    電子郵件: (document.getElementById('femail') || {}).value || '',
+    電話: (document.getElementById('fphone') || {}).value || '',
+    主旨: (document.getElementById('fsubject') || {}).value || '',
+    訊息: (document.getElementById('fmessage') || {}).value || ''
+  };
+
+  // 依身份加入動態欄位
+  if (selectedIdentity === 'business') {
+    payload['公司名稱'] = (document.getElementById('fcompany') || {}).value || '';
+    payload['產業別'] = (document.getElementById('findustry') || {}).value || '';
+    payload['預算範圍'] = (document.getElementById('fbudget') || {}).value || '';
+    payload['服務需求'] = (document.getElementById('fservice') || {}).value || '';
+  } else if (selectedIdentity === 'artist') {
+    payload['藝術專業'] = (document.getElementById('fdiscipline') || {}).value || '';
+    payload['作品集連結'] = (document.getElementById('fportfolio') || {}).value || '';
+    payload['感興趣的計畫'] = (document.getElementById('fprograms') || {}).value || '';
+  } else if (selectedIdentity === 'institution') {
+    payload['機構名稱'] = (document.getElementById('finstitution') || {}).value || '';
+    payload['機構類型'] = (document.getElementById('finstitution_type') || {}).value || '';
+    payload['學生人數'] = (document.getElementById('fstudents') || {}).value || '';
+    payload['合作方向'] = (document.getElementById('fcollaboration') || {}).value || '';
+  }
+
+  fetch('https://remorse-suction-municipal.ngrok-free.dev/webhook/form-submission', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(function() {});
+
   gsap.to(cur, { opacity: 0, duration: 0.25, onComplete: function() {
     cur.classList.remove('active');
     success.classList.add('active');
